@@ -2,24 +2,28 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import CurrencyTableContainer from './containers/CurrencyTableContainer';
+
 class App extends Component {
+  componentDidMount(){
+    // fetch('http://www.apilayer.net/api/live?access_key=63d2ba6c2facc01aa57379fdc96acadf')
+    // .then(response => response.json())
+    // .then(r => {
+    //   console.log(r);
+    //   if (r.success)
+    //     console.log('quotes',r.quotes);
+    //     else
+    //     console.log(r.error.info);
+    // })
+    // .catch(reason => console.error('reason', reason));
+}
+
+  
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <CurrencyTableContainer />
       </div>
     );
   }
