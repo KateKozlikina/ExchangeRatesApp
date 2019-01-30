@@ -3,21 +3,25 @@ import React from 'react';
 import {getExangeRates} from '../action/exchangeRatesAction';
 import {connect} from 'react-redux';
 import CurrencyTable from '../components/CurrencyTable';
+import Converter from '../components/Converter';
 
 
 class CurrencyTableContainer extends React.Component {
     render() {
       console.log(getExangeRates); 
-      const { quotes, isFetching, error} = this.props.exchangeRates;
+      const { valutes, isFetching, error} = this.props.exchangeRates;
       console.log(this.props.getExangeRatesAction);
-      console.log(this.props.exchangeRates, quotes, isFetching, error);
+      console.log(this.props.exchangeRates, valutes, isFetching, error);
       return (
+        <div>
+        <Converter valute = {valutes}/>
         <CurrencyTable 
-        quotes = {quotes} 
+        valute = {valutes} 
         getExangeRates = {this.props.getExangeRatesAction}
         isFetching = {isFetching}
         error = {error}
         />
+        </div>
       );
     }
   }

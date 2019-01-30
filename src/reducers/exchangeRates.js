@@ -5,7 +5,7 @@ import {
 } from '../constants/index';
 
 const initialState = {
-    quotes: {},
+    valutes: {},
     isFetching: false,
     error: ""
   };
@@ -15,7 +15,7 @@ const initialState = {
       case GET_EXCHANGE_RATES_REQUEST:
         return { ...state,  isFetching: true };
       case GET_EXCHANGE_RATES_SUCCESS:
-        return { ...state, quotes: action.payload, isFetching: false };
+        return { ...state, valutes: action.payload, isFetching: false };
       case GET_EXCHANGE_RATES_FAIL:
         return { ...state, isFetching: false, error: action.payload };
       default:

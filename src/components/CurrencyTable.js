@@ -17,6 +17,12 @@ const styles = theme => ({
   table: {
     minWidth: 700,
   },
+  currencyGrowth: {
+    font: 'green',
+  },
+  currencyFll: {
+    font: 'red',
+  },
 });
 
 let id = 0;
@@ -40,8 +46,8 @@ class CurrencyTable extends React.Component{
   }
 
   renderTemlate(){
-    const { classes, quotes,isFetching, error,  getExangeRates} = this.props;
-    console.log(quotes, isFetching, error);
+    const { classes, valute,isFetching, error,  getExangeRates} = this.props;
+    console.log(valute, isFetching, error);
     if (error) {
       return (
         <p>Во время запроса произошла ошибка, пожалуйста, обновите страницу</p>
@@ -51,8 +57,8 @@ class CurrencyTable extends React.Component{
     if (isFetching) {
       return <p>Загружаю...</p>;
     }else {
-      console.log('до отрисовки',quotes);
-      rows = Array.from(quotes);
+      console.log('до отрисовки',valute);
+      rows = Array.from(valute);
       console.log('до отрисовки',rows);
       return (
       
@@ -60,18 +66,34 @@ class CurrencyTable extends React.Component{
         <TableBody>
            { rows.map(row => (
             <TableRow key={row.id}>
-              <TableCell align="right">{row.code}</TableCell>
-              <TableCell align="right">{row.course}</TableCell>
+              <TableCell >{row.code}</TableCell>
+              <TableCell >{row.nominal}</TableCell>
+              <TableCell >{row.name}</TableCell>
+              <TableCell >{row.value}</TableCell>
+              <TableCell >{this.getCurrencyChange(row.value, row.prev)}</TableCell>
             </TableRow>
-          ))} 
+          ))}
         </TableBody>
         </Table>
       
     );
       
-    } 
+
 
   }
+} 
+getCurrencyChange(value, prev){
+  const {classes} = this.props;
+  let   difference = value - prev;
+  let m = Math.pow(10,4);
+  difference =  Math.round(difference*m)/m;
+  
+  if (difference >= 0)
+  return <p className={classes.currencyGrowth}>+{difference} ▲</p>
+  else
+  return <p className={classes.currencyFall}>{difference} ▼</p>
+
+}
   render() {
     const { classes, } = this.props;
     return <Paper className={classes.root}>{this.renderTemlate()}</Paper>

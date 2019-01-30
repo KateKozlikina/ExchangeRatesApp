@@ -1,15 +1,20 @@
-export function createList(quotes){
+export function createList(valutes){
     let list = [];
-    for(let i in quotes){
-        list.push(createData(i, quotes[i]));
+    for(let i in valutes){
+        list.push(createData(i, valutes[i]));
         
     }
 
     return list;   
 
 }
-let id =0;
+
 function createData(code, course) {
-    id += 1;
-    return { id, code, course };
+    let id = course.ID;
+    let nominal = course.Nominal;
+    let name = course.Name;
+    let value = course.Value;
+    let prev = course.Previous; 
+
+    return { id, code, nominal, name, value, prev   };
   }

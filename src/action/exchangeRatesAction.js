@@ -6,6 +6,7 @@ import {
 
 import {ACCESS_KEY, SOURCE} from '../constants/index';
 import {createList} from '../utils/createListExchRates';
+import {URL} from '../constants/index';
 
 
 let cashed = false;
@@ -15,38 +16,30 @@ export function getExangeRates(){
         dispatch({
             type : GET_EXCHANGE_RATES_REQUEST,
         })
-
-        fetch(`http://www.apilayer.net/api/live?access_key=${ACCESS_KEY}&source=${SOURCE}`)
-        .then(response => response.json())
-    .then(response => {
-        if (response.success){
-
-
-            console.log('actionquotes', response.quotes);
-            let quotes = createList( response.quotes);
+        //fetch(`http://www.apilayer.net/api/live?access_key=${ACCESS_KEY}&source=${SOURCE}`)
+        fetch(URL)
+        .then(response => 
+            {
+                console.log('response', response);
+                if(response.ok)
+                 return( response.json());
+                else
+                throw new Error('Network response was not ok.');
+            })
+        .then(response => {
+                console.log('actionquotes', response.Valute);
+                let valutes = createList( response.Valute);
+                dispatch({
+                    type: GET_EXCHANGE_RATES_SUCCESS,
+                    payload: valutes,
+                });
+            })
+        .catch(error => {
             dispatch({
-                type: GET_EXCHANGE_RATES_SUCCESS,
-                payload: quotes,
+            type: GET_EXCHANGE_RATES_FAIL,
+            error: true,
+            payload: error.message,
             });
-
-        }else{
-            let error = `${response.error.code}: ${response.error.info}`;
-            dispatch({
-                type: GET_EXCHANGE_RATES_FAIL,
-                error: true,
-                payload: error,
-              });
-
-        }
-    }
-   )
-    .catch(reason => {
-        dispatch({
-          type: GET_EXCHANGE_RATES_FAIL,
-          error: true,
-          payload: reason.message,
         });
-      }
-        );
     }
 }
