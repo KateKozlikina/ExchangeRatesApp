@@ -29,7 +29,7 @@ class CurrencyTableContainer extends React.Component {
 
 
   const mapStateToProps = store => {
-    console.log('store',store);
+    
     return {
       exchangeRates: store.exchangeRatesReducer,
     };

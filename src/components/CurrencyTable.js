@@ -7,21 +7,27 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import {FormattedNumber, IntlProvider} from 'react-intl';
+import CurrencyFormatter from 'currencyformatter.js';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: '60%',
     marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
+    marginLeft: '20%',
   },
   table: {
+
     minWidth: 700,
   },
   currencyGrowth: {
-    font: 'green',
+    color: 'green',
   },
-  currencyFll: {
-    font: 'red',
+  currencyFall: {
+    color: 'red',
   },
 });
 
@@ -39,6 +45,8 @@ let rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
+
+
 class CurrencyTable extends React.Component{
 
   componentDidMount(){
@@ -46,8 +54,7 @@ class CurrencyTable extends React.Component{
   }
 
   renderTemlate(){
-    const { classes, valute,isFetching, error,  getExangeRates} = this.props;
-    console.log(valute, isFetching, error);
+    const { classes, valute,isFetching, error} = this.props;
     if (error) {
       return (
         <p>Во время запроса произошла ошибка, пожалуйста, обновите страницу</p>
@@ -55,11 +62,9 @@ class CurrencyTable extends React.Component{
     }
 
     if (isFetching) {
-      return <p>Загружаю...</p>;
+      return <CircularProgress disableShrink />;;
     }else {
-      console.log('до отрисовки',valute);
-      rows = Array.from(valute);
-      console.log('до отрисовки',rows);
+      rows = Array.from(valute);  
       return (
       
         <Table className={classes.table}>
@@ -67,9 +72,12 @@ class CurrencyTable extends React.Component{
            { rows.map(row => (
             <TableRow key={row.id}>
               <TableCell >{row.code}</TableCell>
+              
               <TableCell >{row.nominal}</TableCell>
               <TableCell >{row.name}</TableCell>
-              <TableCell >{row.value}</TableCell>
+              <TableCell >{CurrencyFormatter.format(row.value, { currency: row.code, locale: 'ru_RU' })}
+              
+                </TableCell>
               <TableCell >{this.getCurrencyChange(row.value, row.prev)}</TableCell>
             </TableRow>
           ))}

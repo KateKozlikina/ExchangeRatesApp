@@ -1,20 +1,39 @@
-import {GET_CONVERTER} from '../constants/index';
+import {converter} from '../utils/converter';
+import {RUB} from '../constants/index';
+
+import {
+  CHANGE_CURRENCY_FROM,
+CHANGE_CURRENCY_TO,
+CHANGE_CONVERT_FROM,
+} from '../constants/index';
 
 const initialState = {
-    currencyFrom: {},
-    currencyTo: {},
-    convert: 1,
+    currencyFrom: RUB,
+    currencyTo: RUB,
+    convertFrom: 1,
+    convertTo: 1,
   };
 
-  export function exchangeRatesReducer(state = initialState, action) {
+  export function convertReducer(state = initialState, action) {
+    let newState = {};
     switch (action.type) {
-      case GET_CONVERTER:
-      return {...action.payload}
-    //   case GET_EXCHANGE_RATES_SUCCESS:
-    //     return { ...state, valutes: action.payload, isFetching: false };
-    //   case GET_EXCHANGE_RATES_FAIL:
-    //     return { ...state, isFetching: false, error: action.payload };
+      case CHANGE_CURRENCY_FROM:{
+        newState = {...state, currencyFrom: action.payload };
+      break;}
+      case CHANGE_CURRENCY_TO:{
+        console.log('CurrencyTo', action.payload);
+        newState = {...state, currencyTo: action.payload};
+      break;}
+      case CHANGE_CONVERT_FROM:{
+        newState =  {...state, convertFrom: action.payload};
+      break;}
       default:
         return state;
     }
+    console.log('newState', newState);
+    
+    let _convertTo = converter(newState.currencyFrom, newState.currencyTo, newState.convertFrom);
+    console.log('convertTo', _convertTo);
+    return {...newState, convertTo: _convertTo };
+
   }

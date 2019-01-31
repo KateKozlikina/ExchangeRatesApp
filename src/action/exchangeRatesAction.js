@@ -20,14 +20,14 @@ export function getExangeRates(){
         fetch(URL)
         .then(response => 
             {
-                console.log('response', response);
+                
                 if(response.ok)
                  return( response.json());
                 else
                 throw new Error('Network response was not ok.');
             })
         .then(response => {
-                console.log('actionquotes', response.Valute);
+                
                 let valutes = createList( response.Valute);
                 dispatch({
                     type: GET_EXCHANGE_RATES_SUCCESS,
