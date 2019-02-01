@@ -14,6 +14,13 @@ import { converter } from '../utils/converter';
       currencyTo: RUB,
       convertFrom: 1,
       convertTo: 1,
+      },
+      {
+      id: 1,
+      currencyFrom: RUB,
+      currencyTo: RUB,
+      convertFrom: 1,
+      convertTo: 1,
       }];
 
     
@@ -38,8 +45,8 @@ import { converter } from '../utils/converter';
             if(id!==0 && id!==1 ){
             const newState = state.slice();
             return newState.filter(converter => converter.id !== action.payload)
-          };
-          break;
+            
+          }else return state;
           }
 
           case EDIT_CURRENCY_FROM:{

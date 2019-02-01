@@ -1,11 +1,8 @@
 import {combineReducers} from 'redux';
-import  {exchangeRatesReducer} from './exchangeRates';
-import {convertReducer} from './converter';
-import {listConverters} from './addDeleteConverter';
-
+import  {listCurrencies} from './listCurrencies';
+import {listConverters} from './listConverters';
 
 export const rootReducer = combineReducers({
-  exchangeRatesReducer,  
-  convertReducer,
+  listCurrencies, 
   listConverters,
 });

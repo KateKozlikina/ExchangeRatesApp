@@ -16,10 +16,10 @@ function SimpleAppBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="default">
+      <AppBar position="static" >
         <Toolbar>
           <Typography variant="h6" color="inherit">
-            Photos
+            Курс валют ЦБР на сегодня
           </Typography>
         </Toolbar>
       </AppBar>

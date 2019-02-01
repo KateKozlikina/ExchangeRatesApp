@@ -1,8 +1,9 @@
 import {
-    GET_EXCHANGE_RATES_REQUEST,
-    GET_EXCHANGE_RATES_SUCCESS,
-    GET_EXCHANGE_RATES_FAIL
+  GET_LIST_CURRENCIES_REQUEST,
+  GET_LIST_CURRENCIES_SUCCESS,
+  GET_LIST_CURRENCIES_FAIL
 } from '../constants/index';
+
 
 const initialState = {
     valutes: {},
@@ -10,13 +11,13 @@ const initialState = {
     error: ""
   };
 
-  export function exchangeRatesReducer(state = initialState, action) {
+  export function listCurrencies(state = initialState, action) {
     switch (action.type) {
-      case GET_EXCHANGE_RATES_REQUEST:
+      case GET_LIST_CURRENCIES_REQUEST:
         return { ...state,  isFetching: true };
-      case GET_EXCHANGE_RATES_SUCCESS:
+      case GET_LIST_CURRENCIES_SUCCESS:
         return { ...state, valutes: action.payload, isFetching: false };
-      case GET_EXCHANGE_RATES_FAIL:
+      case GET_LIST_CURRENCIES_FAIL:
         return { ...state, isFetching: false, error: action.payload };
       default:
         return state;

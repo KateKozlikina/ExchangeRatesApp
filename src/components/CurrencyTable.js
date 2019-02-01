@@ -8,17 +8,26 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import CurrencyFormatter from 'currencyformatter.js';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import './CurrencyTable';
-import CardMedia from '@material-ui/core/CardMedia';
-import img from '../flag.png';
+import TableHead from '@material-ui/core/TableHead';
 import Flag from 'react-world-flags';
+import Divider from '@material-ui/core/Divider';
 
 
+const CustomTableCell = withStyles(theme => ({
+  head: {
+    backgroundColor: theme.palette.primary.light,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
 const styles = theme => ({
   root: {
     width: '94%',
     marginTop: theme.spacing.unit * 3,
+    marginButtom: theme.spacing.unit * 3,
     overflowX: 'auto',
     marginRight: '3%',
     marginLeft: '3%',
@@ -26,6 +35,12 @@ const styles = theme => ({
   table: {
 
     minWidth: 700,
+  },
+
+  row: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.background.default,
+    },
   },
   currencyGrowth: {
     color: 'green',
@@ -35,26 +50,10 @@ const styles = theme => ({
   },
 });
 
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
-
-let rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-
-
 class CurrencyTable extends React.Component{
 
   componentDidMount(){
-    this.props.getExangeRates();
+    this.props.getListCurrencies();
   }
 
   renderTemlate(){
@@ -68,36 +67,41 @@ class CurrencyTable extends React.Component{
     if (isFetching) {
       return <CircularProgress disableShrink />;;
     }else {
-      rows = Array.from(valute);  
+      const rows = Array.from(valute);  
       return (
         <div>
         
         <Table className={classes.table}>
+        <TableHead>
+          <TableRow >
+              <CustomTableCell>Флаг</CustomTableCell>
+              <CustomTableCell>Код</CustomTableCell>
+              <CustomTableCell>Номинал</CustomTableCell>
+              <CustomTableCell>Валюта</CustomTableCell>
+              <CustomTableCell>Курс ЦБ</CustomTableCell>
+              <CustomTableCell>Изменения</CustomTableCell>
+            </TableRow>
+        </TableHead>
         <TableBody>
            { rows.map(row => (
-            <TableRow key={row.id}>
-            <TableCell >
-            <Flag code={row.code[0]+row.code[1]} height="20" width="25" fallback={ <span></span> }/>
-
-
-            </TableCell>
-              <TableCell >{row.code}</TableCell>
-              
-              <TableCell >{row.nominal}</TableCell>
-              <TableCell >{row.name}</TableCell>
-              <TableCell >{CurrencyFormatter.format(row.value, { currency: row.code, locale: 'ru_RU' })}
-              
-                </TableCell>
-              <TableCell >{this.getCurrencyChange(row.value, row.prev)}</TableCell>
+            <TableRow className={classes.row} key={row.id}>
+              <CustomTableCell >
+                <Flag code={row.code[0]+row.code[1]} height="20" width="25" fallback={ <span></span> }/>
+              </CustomTableCell>
+              <CustomTableCell >{row.code}</CustomTableCell>
+              <CustomTableCell >{row.nominal}</CustomTableCell>
+              <CustomTableCell >{row.name}</CustomTableCell>
+              <CustomTableCell >
+                {CurrencyFormatter.format(row.value, { currency: row.code, locale: 'ru_RU' })}      
+              </CustomTableCell>
+              <CustomTableCell >{this.getCurrencyChange(row.value, row.prev)}</CustomTableCell>
             </TableRow>
           ))}
         </TableBody>
         </Table>
+        <Divider/>  
         </div>
     );
-      
-
-
   }
 } 
 getCurrencyChange(value, prev){
@@ -112,18 +116,11 @@ getCurrencyChange(value, prev){
   return <p className={classes.currencyFall}>{difference} ▼</p>
 
 }
-  render() {
+render() {
     const { classes, } = this.props;
     return <Paper className={classes.root}>{this.renderTemlate()}</Paper>
     
   }
-
 }
-
-
-CurrencyTable.propTypes = {
-  classes: PropTypes.object.isRequired,
-  getExangeRates: PropTypes.func.isRequired, 
-};
 
 export default withStyles(styles)(CurrencyTable);

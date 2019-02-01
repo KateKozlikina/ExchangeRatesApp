@@ -1,8 +1,10 @@
-import {ADD_CONVERTER,
+import {
+    ADD_CONVERTER,
     DELETE_CONVERTER,
     EDIT_CURRENCY_FROM,
     EDIT_CURRENCY_TO,
-    EDIT_CONVERT_FROM,} from '../constants/index';
+    EDIT_CONVERT_FROM,
+} from '../constants/index';
 
     export function addConverter(addedConverter) {
         console.log('currencyFrom', addedConverter);

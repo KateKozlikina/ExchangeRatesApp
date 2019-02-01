@@ -4,36 +4,49 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { withStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
-import {converter} from '../utils/converter';
-
 import {RUB} from '../constants/index';
 import { Paper } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
+    width: '90%',
     marginTop: theme.spacing.unit * 3,
-    marginLeft: '10%',
+    marginLeft: '5%',
+  },
+  container1: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    width: '45%',
+    marginTop: theme.spacing.unit * 3,
+    marginLeft: '1%',
+  },
+  container3: {
+    
+    width: '10%',
+    marginTop: theme.spacing.unit * 3,
+    marginLeft: '45%',
   },
   input: {
-    margin: theme.spacing.unit,
-    width: 100,
-    height: 50,
+    
+    margin: theme.spacing.unit *2,
+  
   },
   itemMenu: {
     margin: theme.spacing.unit,
     width: 100,
-    font: "8px",
   },
   formControl: {
     margin: theme.spacing.unit,
-    width: 220,
+    marginLeft: theme.spacing.unit*2,
+    
   },
   fab: {
     margin: theme.spacing.unit,
@@ -52,81 +65,36 @@ getID(){
       const EUR = select.filter(a => a.code === 'EUR')[0];
       const USD = select.filter(a => a.code === 'USD')[0];
       console.log(EUR, USD);
-      if (EUR) nextProps.editCurrencyFrom( 0, EUR )
-      //f (EUR) nextProps.addConverter({id: this.getID(), currencyFrom: EUR, currencyTo: RUB});
-      if (USD) nextProps.addConverter({id: 1,currencyFrom: USD, currencyTo: RUB});
-      nextProps.changeCurrencyTo(select.filter(a => a.code === 'USD')[0]);
-      console.log(nextProps);
-      
+       if (EUR ) nextProps.editCurrencyFrom( 0, EUR );
     }
-    // if(nextProps.pairConvert!==this.props.pairConvert){
-    //   console.log('11',nextProps);
-    //   this.props.addConverter(this.props.pairConvert);
-    // }
+
   }
 
     render(){
-      const {classes, pairConvert, valute} = this.props;
-      console.log(this.props);
-      const {changeCurrencyFrom,changeCurrencyTo, changeConvertFrom, addConverter} = this.props;
-      const select = Array.from(valute);
-      select.unshift(RUB);
-      console.log('dff', this.props);
-      //this.props.addConverter(pairConvert);
-      //console.log(this.props);
-      //if (select.lenght>0)
-     // changeCurrencyTo(select.filter(a => a.code === 'USD')[0]);
+      const {classes} = this.props;
       return(
-        <Paper className={classes.container}>
-          {/* <Input 
-            defaultValue = {pairConvert.convertFrom}
-            onChange={(e)=>this.inputChange(e, changeConvertFrom)}/>
-            <Input 
-            defaultValue = {pairConvert.convertTo}
-            />
-            <p>{pairConvert.convertTo}</p>
-          <FormControl className={classes.formControl}>
-            <InputLabel >Выберите валюту</InputLabel>
-          {this.itemsRender(select, changeCurrencyFrom, pairConvert.currencyFrom )} 
-          </FormControl>
-
-          <FormControl className={classes.formControl}>
-            <InputLabel >Выберите валюту</InputLabel>
-              {this.itemsRender(select, changeCurrencyTo, pairConvert.currencyTo)} 
-          </FormControl> */}
-          <Fab color="primary" aria-label="Add" 
+        <div className={classes.container}>
+            { this.props.converters.map(row => (                   
+                <Paper className={classes.container1} >                      
+                    {this.panelConverterRender(row) }
+                </Paper>                    
+              )   )} 
+        <div className={classes.container3}>
+                <Fab color="primary" aria-label="Add" 
                   className={classes.fab} 
-                  onClick={(e) =>this.addClick(e, this.props.addConverter)}>Добавить</Fab> 
-              { this.props.converters.map(row => (                   
-           <Paper>    
-                               
-           {this.panelConverterRender(row) }
-           </Paper>                    
-        ))} 
-          {/* {this.props.converters && this.panelConverterRender(pairConvert)} */}
-          {/* { <Fab color="primary" aria-label="Add" className={classes.fab} 
-          onClick={(e)=>this.addClick(e, addConverter, pairConvert)}>
-        
-      </Fab> }
-      {this.listConvert()} */}
-      
-        </Paper>
+                  onClick={(e) =>
+                  this.addClick(e, this.props.addConverter)}>
+                  <AddIcon/>
+               </Fab>
+        </div>
+      </div>
         );
     }
 
-    listConvert(){
-      const {converters} = this.props;
-      if (converters && converters.lenght>1)
-      { converters.map(row => ( 
-        <Paper>     
-                       
-        this.panelConverterRender(row) 
-        </Paper>                  
-    ))}  
-    }
+
     panelConverterRender(pairConvert){
       const {classes, valute} = this.props;
-      const {changeCurrencyFrom,changeCurrencyTo, deleteConverter, changeConvertFrom,addConverter, editConvertFrom, editCurrencyFrom, editCurrencyTo} = this.props;
+      const {   editConvertFrom, editCurrencyFrom, editCurrencyTo} = this.props;
       const select = Array.from(valute);
       select.unshift(RUB);
       return (    
@@ -135,32 +103,31 @@ getID(){
         <Typography variant="h6" color="inherit">
           Кoнвертер валют
         </Typography>
-      </Toolbar>    
-
-          <TextField className={classes.input}
-            variant="outlined"
+        </Toolbar>    
+        <FormControl className={classes.formControl}>
+            <InputLabel variant = "standart" >Переводим из валюты...</InputLabel>
+            <TextField className={classes.input}
+            
             defaultValue = {pairConvert.convertFrom}
             onChange={(e)=>this.inputChange(e, editConvertFrom, pairConvert.id)}/>
-
-        <FormControl className={classes.formControl}>
-            <InputLabel variant = "standart" >Выберите валюту</InputLabel>
           {this.itemsRender(select, editCurrencyFrom, pairConvert.currencyFrom, pairConvert.id )} 
           </FormControl>
-
-        <p>{pairConvert.convertTo}</p>
-
-        <FormControl className={classes.formControl}>
-            <InputLabel >Выберите валюту</InputLabel>
+          
+          
+          <FormControl className={classes.formControl}>
+            <InputLabel variant = "standart" >.. в</InputLabel>
+            <h4  >{Math.round(pairConvert.convertTo * 10000) / 10000}</h4>
               {this.itemsRender(select, editCurrencyTo, pairConvert.currencyTo, pairConvert.id)} 
-          </FormControl>
-          <Fab color="primary" aria-label="Add" className={classes.fab} onClick={(e) =>this.delClick(e, deleteConverter, pairConvert.id)}>
-        Удалить
-      </Fab>
+            </FormControl> 
+              
+          {this.fabDelete(pairConvert.id)}
+          
         </div>
       );
     }
+
+
     itemsRender(currencies=[], onChange, currency, id){
-      const {valute} = this.props;
       console.log('id', currency );
       return(
       <Select 
@@ -172,6 +139,17 @@ getID(){
       </Select>)
     }
 
+    fabDelete(id){
+      if (id !== 0 && id !== 1)
+      return (
+        <Fab color="primary" className={this.props.classes.fab} 
+          onClick={(e) =>this.delClick(e, this.props.deleteConverter, id)}>
+        <DeleteIcon/>
+      </Fab>
+
+      );
+      
+    }
     addClick(e, func){
       func({id: this.getID(), currencyFrom: RUB, currencyTo: RUB});
       console.log(this.props);
