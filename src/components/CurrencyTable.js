@@ -4,20 +4,24 @@ import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import {FormattedNumber, IntlProvider} from 'react-intl';
 import CurrencyFormatter from 'currencyformatter.js';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import './CurrencyTable';
+import CardMedia from '@material-ui/core/CardMedia';
+import img from '../flag.png';
+import Flag from 'react-world-flags';
+
 
 
 const styles = theme => ({
   root: {
-    width: '60%',
+    width: '94%',
     marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
-    marginLeft: '20%',
+    marginRight: '3%',
+    marginLeft: '3%',
   },
   table: {
 
@@ -66,11 +70,17 @@ class CurrencyTable extends React.Component{
     }else {
       rows = Array.from(valute);  
       return (
-      
+        <div>
+        
         <Table className={classes.table}>
         <TableBody>
            { rows.map(row => (
             <TableRow key={row.id}>
+            <TableCell >
+            <Flag code={row.code[0]+row.code[1]} height="20" width="25" fallback={ <span></span> }/>
+
+
+            </TableCell>
               <TableCell >{row.code}</TableCell>
               
               <TableCell >{row.nominal}</TableCell>
@@ -83,7 +93,7 @@ class CurrencyTable extends React.Component{
           ))}
         </TableBody>
         </Table>
-      
+        </div>
     );
       
 

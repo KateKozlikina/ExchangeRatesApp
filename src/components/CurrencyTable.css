@@ -1,0 +1,10 @@
+div{
+    float: left;
+    background-image: url(https://www.fxexchangerate.com/static/flag.png);
+    width: 20px;
+    height: 15px;
+    background-repeat: no-repeat;
+}
+.AUD {
+    background-position: 0 -64px;
+}

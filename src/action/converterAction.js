@@ -17,3 +17,6 @@ function converter( currencyFrom, currencyTo, value =1){
     let result = value * currencyFrom.value / currencyFrom.nominal / currencyTo.value * currencyTo.nominal;
     return result;
 }
+
+
+
