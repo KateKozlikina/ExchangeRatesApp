@@ -15,7 +15,7 @@ import Divider from '@material-ui/core/Divider';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
   },
   body: {
