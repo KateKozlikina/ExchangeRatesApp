@@ -66,8 +66,8 @@ getID(){
       const USD = select.filter(a => a.code === 'USD')[0];
       console.log(EUR, USD);
        if (EUR ) nextProps.editCurrencyFrom( 0, EUR );
+       if (USD ) nextProps.editCurrencyFrom( 1, USD );
     }
-
   }
 
     render(){
@@ -76,17 +76,17 @@ getID(){
         <div className={classes.container}>
             { this.props.converters.map(row => (                   
                 <Paper className={classes.container1} >                      
-                    {this.panelConverterRender(row) }
+                    {this.panelConverterRender(row)}
                 </Paper>                    
-              )   )} 
-        <div className={classes.container3}>
-                <Fab color="primary" aria-label="Add" 
-                  className={classes.fab} 
-                  onClick={(e) =>
-                  this.addClick(e, this.props.addConverter)}>
-                  <AddIcon/>
-               </Fab>
-        </div>
+              ))} 
+          <div className={classes.container3}>
+                  <Fab color="primary" aria-label="Add" 
+                    className={classes.fab} 
+                    onClick={(e) =>
+                    this.addClick(e, this.props.addConverter)}>
+                    <AddIcon/>
+                </Fab>
+          </div>
       </div>
         );
     }
@@ -100,43 +100,38 @@ getID(){
       return (    
         <div>
         <Toolbar>
-        <Typography variant="h6" color="inherit">
-          Кoнвертер валют
-        </Typography>
+          <Typography variant="h6" color="inherit">
+              Кoнвертер валют
+          </Typography>
         </Toolbar>    
         <FormControl className={classes.formControl}>
             <InputLabel variant = "standart" >Переводим из валюты...</InputLabel>
             <TextField className={classes.input}
-            
             defaultValue = {pairConvert.convertFrom}
             onChange={(e)=>this.inputChange(e, editConvertFrom, pairConvert.id)}/>
-          {this.itemsRender(select, editCurrencyFrom, pairConvert.currencyFrom, pairConvert.id )} 
-          </FormControl>
-          
-          
-          <FormControl className={classes.formControl}>
-            <InputLabel variant = "standart" >.. в</InputLabel>
-            <h4  >{Math.round(pairConvert.convertTo * 10000) / 10000}</h4>
-              {this.itemsRender(select, editCurrencyTo, pairConvert.currencyTo, pairConvert.id)} 
-            </FormControl> 
-              
-          {this.fabDelete(pairConvert.id)}
-          
+            {this.itemsRender(select, editCurrencyFrom, pairConvert.currencyFrom, pairConvert.id )} 
+        </FormControl>
+        <FormControl className={classes.formControl}>
+          <InputLabel variant = "standart" >.. в</InputLabel>
+          <h4>{Math.round(pairConvert.convertTo * 10000) / 10000}</h4>
+          {this.itemsRender(select, editCurrencyTo, pairConvert.currencyTo, pairConvert.id)} 
+        </FormControl> 
+        {this.fabDelete(pairConvert.id)}
         </div>
       );
     }
 
 
     itemsRender(currencies=[], onChange, currency, id){
-      console.log('id', currency );
-      return(
-      <Select 
-      value= {currency.id}
-      onChange={(e)=> this.handleChange(e, currencies, onChange, id)}>
-          { currencies.map(row => (                   
-            <MenuItem value={row.id}>{row.name}</MenuItem>                    
-        ))}        
-      </Select>)
+        return(
+          <Select 
+          value= {currency.id}
+          onChange={(e)=> this.handleChange(e, currencies, onChange, id)}>
+              {currencies.map(row => (                   
+                <MenuItem value={row.id}>{row.name}</MenuItem>                    
+            ))}        
+          </Select>
+        );
     }
 
     fabDelete(id){
@@ -144,9 +139,8 @@ getID(){
       return (
         <Fab color="primary" className={this.props.classes.fab} 
           onClick={(e) =>this.delClick(e, this.props.deleteConverter, id)}>
-        <DeleteIcon/>
-      </Fab>
-
+          <DeleteIcon/>
+        </Fab>
       );
       
     }

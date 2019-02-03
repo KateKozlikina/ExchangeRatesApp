@@ -55,7 +55,7 @@ import { converter } from '../utils/converter';
             convert.currencyFrom = action.payload.currencyFrom;
             convert.convertTo = converter(convert.currencyFrom, convert.currencyTo, convert.convertFrom);
             newState[convert.id] = convert;
-                    return newState;
+            return newState;
                   
                   
           }
@@ -65,7 +65,7 @@ import { converter } from '../utils/converter';
             convert.currencyTo = action.payload.currencyTo;
             convert.convertTo = converter(convert.currencyFrom, convert.currencyTo, convert.convertFrom);
             newState[convert.id] = convert;
-                    return newState;
+            return newState;
           }
 
           case EDIT_CONVERT_FROM:{
@@ -74,7 +74,7 @@ import { converter } from '../utils/converter';
             convert.convertFrom = action.payload.convertFrom;
             convert.convertTo = converter(convert.currencyFrom, convert.currencyTo, convert.convertFrom);
             newState[convert.id] = convert;
-                    return newState;
+            return newState;
           }
           default:
             return state;

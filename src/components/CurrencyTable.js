@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,7 +9,6 @@ import CurrencyFormatter from 'currencyformatter.js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TableHead from '@material-ui/core/TableHead';
 import Flag from 'react-world-flags';
-import Divider from '@material-ui/core/Divider';
 
 
 const CustomTableCell = withStyles(theme => ({
@@ -33,7 +31,6 @@ const styles = theme => ({
     marginLeft: '3%',
   },
   table: {
-
     minWidth: 700,
   },
 
@@ -65,45 +62,44 @@ class CurrencyTable extends React.Component{
     }
 
     if (isFetching) {
-      return <CircularProgress disableShrink />;;
+      return <CircularProgress disableShrink />;
     }else {
       const rows = Array.from(valute);  
       return (
         <div>
-        
-        <Table className={classes.table}>
-        <TableHead>
-          <TableRow >
-              <CustomTableCell>Флаг</CustomTableCell>
-              <CustomTableCell>Код</CustomTableCell>
-              <CustomTableCell>Номинал</CustomTableCell>
-              <CustomTableCell>Валюта</CustomTableCell>
-              <CustomTableCell>Курс ЦБ</CustomTableCell>
-              <CustomTableCell>Изменения</CustomTableCell>
-            </TableRow>
-        </TableHead>
-        <TableBody>
-           { rows.map(row => (
-            <TableRow className={classes.row} key={row.id}>
-              <CustomTableCell >
-                <Flag code={row.code[0]+row.code[1]} height="20" width="25" fallback={ <span></span> }/>
-              </CustomTableCell>
-              <CustomTableCell >{row.code}</CustomTableCell>
-              <CustomTableCell >{row.nominal}</CustomTableCell>
-              <CustomTableCell >{row.name}</CustomTableCell>
-              <CustomTableCell >
-                {CurrencyFormatter.format(row.value, { currency: row.code, locale: 'ru_RU' })}      
-              </CustomTableCell>
-              <CustomTableCell >{this.getCurrencyChange(row.value, row.prev)}</CustomTableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        </Table>
-        <Divider/>  
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow >
+                  <CustomTableCell>Флаг</CustomTableCell>
+                  <CustomTableCell>Код</CustomTableCell>
+                  <CustomTableCell>Номинал</CustomTableCell>
+                  <CustomTableCell>Валюта</CustomTableCell>
+                  <CustomTableCell>Курс ЦБ</CustomTableCell>
+                  <CustomTableCell>Изменения</CustomTableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+              { rows.map(row => (
+                <TableRow className={classes.row} key={row.id}>
+                  <CustomTableCell >
+                    <Flag code={row.code[0]+row.code[1]} height="20" width="25" fallback={ <span></span> }/>
+                  </CustomTableCell>
+                  <CustomTableCell >{row.code}</CustomTableCell>
+                  <CustomTableCell >
+                    {CurrencyFormatter.format(row.nominal, { currency: row.code, locale: 'ru_RU' })}
+                  </CustomTableCell>
+                  <CustomTableCell >{row.name}</CustomTableCell>
+                  <CustomTableCell >{row.value}</CustomTableCell>
+                  <CustomTableCell >{this.getCurrencyChange(row.value, row.prev)}</CustomTableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table> 
         </div>
     );
   }
 } 
+
 getCurrencyChange(value, prev){
   const {classes} = this.props;
   let   difference = value - prev;
@@ -114,8 +110,8 @@ getCurrencyChange(value, prev){
   return <p className={classes.currencyGrowth}>+{difference} ▲</p>
   else
   return <p className={classes.currencyFall}>{difference} ▼</p>
-
 }
+
 render() {
     const { classes, } = this.props;
     return <Paper className={classes.root}>{this.renderTemlate()}</Paper>

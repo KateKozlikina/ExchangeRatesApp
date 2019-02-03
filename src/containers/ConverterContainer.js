@@ -21,17 +21,14 @@ class ConverterContainer extends React.Component {
          editCurrencyFrom = {this.props.editCurrencyFrom}
          addConverter = {this.props.addConverter}
          deleteConverter = {this.props.deleteConverter}
-         editConvertFrom = {this.props.editConvertFrom}
-        
+         editConvertFrom = {this.props.editConvertFrom} 
          />
       );
     }
   }
 
   const mapStateToProps = store => {
-   
     return {
-
       converters : store.listConverters,
     };
   };

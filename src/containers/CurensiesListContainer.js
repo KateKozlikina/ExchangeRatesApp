@@ -14,7 +14,6 @@ class CurrencyTableContainer extends React.Component {
         <div>
           <ConverterContainer valute = {valutes}/>
           <Divider/>
-
           <CurrencyTable 
             valute = {valutes} 
             getListCurrencies = {this.props.getListCurrencies}
