@@ -3,41 +3,45 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { withStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
 import {RUB} from '../constants/index';
 import { Paper } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+import red from '@material-ui/core/colors/red';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
-    width: '90%',
-    marginTop: theme.spacing.unit * 3,
-    marginLeft: '5%',
+    width: '94%',
+    marginTop: theme.spacing.unit * 10,
+    marginLeft: '3%',
   },
   container1: {
     display: 'flex',
     flexWrap: 'wrap',
-    width: '45%',
+    width: '50%',
     marginTop: theme.spacing.unit * 3,
-    marginLeft: '1%',
+    minWidth: 250,
   },
-  container3: {
-    
+  container3: { 
     width: '10%',
     marginTop: theme.spacing.unit * 3,
     marginLeft: '45%',
   },
-  input: {
+  input: {    
+    margin: theme.spacing.unit *2,  
+  },
+  inputLabel: {    
+    marginLeft: theme.spacing.unit*2, 
     
-    margin: theme.spacing.unit *2,
-  
+  },
+  select: {    
+    margin: theme.spacing.unit *2,  
+    width: 200,
   },
   itemMenu: {
     margin: theme.spacing.unit,
@@ -45,15 +49,21 @@ const styles = theme => ({
   },
   formControl: {
     margin: theme.spacing.unit,
-    marginLeft: theme.spacing.unit*2,
+    marginLeft: theme.spacing.unit,
     
   },
-  fab: {
-    margin: theme.spacing.unit,
-  },
+
+  iconHover: {
+    margin: theme.spacing.unit * 2,
+    '&:hover': {
+      color: red[800],
+    },
+  }
+
 });
 
 class Converter extends React.Component{
+
 
 getID(){
   return (new Date()).getTime();
@@ -79,14 +89,6 @@ getID(){
                     {this.panelConverterRender(row)}
                 </Paper>                    
               ))} 
-          <div className={classes.container3}>
-                  <Fab color="primary" aria-label="Add" 
-                    className={classes.fab} 
-                    onClick={(e) =>
-                    this.addClick(e, this.props.addConverter)}>
-                    <AddIcon/>
-                </Fab>
-          </div>
       </div>
         );
     }
@@ -99,36 +101,37 @@ getID(){
       select.unshift(RUB);
       return (    
         <div>
-        <Toolbar>
-          <Typography variant="h6" color="inherit">
-              Кoнвертер валют
-          </Typography>
-        </Toolbar>    
-        <FormControl className={classes.formControl}>
-            <InputLabel variant = "standart" >Переводим из валюты...</InputLabel>
-            <TextField className={classes.input}
-            defaultValue = {pairConvert.convertFrom}
-            onChange={(e)=>this.inputChange(e, editConvertFrom, pairConvert.id)}/>
+          <Toolbar>
+          {this.fabDelete(pairConvert.id)}
+            <Typography variant="h6" color="inherit">
+                Кoнвертер валют
+            </Typography>
+          </Toolbar>  
+          <FormControl className={classes.formControl}>            
+              <TextField className={classes.input} type="number"
+              defaultValue = {pairConvert.convertFrom}
+              onChange={(e)=>this.inputChange(e, editConvertFrom, pairConvert.id)}/>
+              <h4 className={classes.input} >{Math.round(pairConvert.convertTo * 10000) / 10000}</h4>  
+          </FormControl>
+          <FormControl className={classes.formControl}>
             {this.itemsRender(select, editCurrencyFrom, pairConvert.currencyFrom, pairConvert.id )} 
-        </FormControl>
-        <FormControl className={classes.formControl}>
-          <InputLabel variant = "standart" >.. в</InputLabel>
-          <h4>{Math.round(pairConvert.convertTo * 10000) / 10000}</h4>
-          {this.itemsRender(select, editCurrencyTo, pairConvert.currencyTo, pairConvert.id)} 
-        </FormControl> 
-        {this.fabDelete(pairConvert.id)}
+            {this.itemsRender(select, editCurrencyTo, pairConvert.currencyTo, pairConvert.id)} 
+          </FormControl> 
         </div>
       );
     }
 
 
     itemsRender(currencies=[], onChange, currency, id){
+      const {classes} = this.props;
         return(
           <Select 
           value= {currency.id}
+          className={classes.select}
+          
           onChange={(e)=> this.handleChange(e, currencies, onChange, id)}>
               {currencies.map(row => (                   
-                <MenuItem value={row.id}>{row.name}</MenuItem>                    
+                <MenuItem key={row.id} value={row.id}>{row.name}</MenuItem>                    
             ))}        
           </Select>
         );
@@ -137,19 +140,13 @@ getID(){
     fabDelete(id){
       if (id !== 0 && id !== 1)
       return (
-        <Fab color="primary" className={this.props.classes.fab} 
-          onClick={(e) =>this.delClick(e, this.props.deleteConverter, id)}>
-          <DeleteIcon/>
-        </Fab>
+        <CloseIcon color="primary" 
+          onClick={(e) =>this.delClick(e, this.props.deleteConverter, id)}>   
+        </CloseIcon>
       );
       
     }
-    addClick(e, func){
-      func({id: this.getID(), currencyFrom: RUB, currencyTo: RUB});
-      console.log(this.props);
 
-
-    }
 
     delClick(e, func, id){
       func(id);

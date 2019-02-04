@@ -3,6 +3,7 @@ import AppBar from './components/AppBar';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 import CurensiesListContainer from './containers/CurensiesListContainer';
+import AddConverterContainer from './containers/AddConverterContainer';
 
 const styles = theme => ({
   container: {
@@ -28,6 +29,7 @@ class App extends Component {
         <AppBar/>
         <Divider/>
         <CurensiesListContainer />
+        <AddConverterContainer />
       </div>
     );
   }

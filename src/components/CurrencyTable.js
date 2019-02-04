@@ -17,7 +17,7 @@ const CustomTableCell = withStyles(theme => ({
     color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14,
+    fontSize: 16,
   },
 }))(TableCell);
 
@@ -25,7 +25,7 @@ const styles = theme => ({
   root: {
     width: '94%',
     marginTop: theme.spacing.unit * 3,
-    marginButtom: theme.spacing.unit * 3,
+    buttom: theme.spacing.unit * 10,
     overflowX: 'auto',
     marginRight: '3%',
     marginLeft: '3%',
@@ -33,9 +33,12 @@ const styles = theme => ({
   table: {
     minWidth: 700,
   },
+  footer: {
+    marginTop: theme.spacing.unit * 20,
+  },
 
   row: {
-    '&:nth-of-type(odd)': {
+  '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.background.default,
     },
   },
@@ -66,9 +69,8 @@ class CurrencyTable extends React.Component{
     }else {
       const rows = Array.from(valute);  
       return (
-        <div>
           <Table className={classes.table}>
-            <TableHead>
+            <TableHead >
               <TableRow >
                   <CustomTableCell>Флаг</CustomTableCell>
                   <CustomTableCell>Код</CustomTableCell>
@@ -95,7 +97,6 @@ class CurrencyTable extends React.Component{
               ))}
             </TableBody>
           </Table> 
-        </div>
     );
   }
 } 
@@ -114,7 +115,12 @@ getCurrencyChange(value, prev){
 
 render() {
     const { classes, } = this.props;
-    return <Paper className={classes.root}>{this.renderTemlate()}</Paper>
+    return (
+      <div>
+          <Paper className={classes.root}>{this.renderTemlate()}</Paper>
+          <div className={classes.footer}></div>
+      </div>
+            );
     
   }
 }
