@@ -1,39 +1,39 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import CurrencyTable from '../components/CurrencyTable';
 import ConverterContainer from './ConverterContainer';
-import {getListCurrencies} from '../action/getListGurrencies';
+import getListCurrencies from '../action/getListGurrencies';
 
 
+const CurrensiesListContainer = ({ listCurrencies, getListCurrenciesAction }) => {
+  const { valutes, isFetching, error } = listCurrencies;
+  return (
+    <div>
+      <ConverterContainer valute={valutes} />
+      <CurrencyTable
+        valute={valutes}
+        getListCurrencies={getListCurrenciesAction}
+        isFetching={isFetching}
+        error={error}
+      />
+    </div>
+  );
+};
 
-class CurrensiesListContainer extends React.Component {
-    render() {
-      const { valutes, isFetching, error} = this.props.listCurrencies;
-      return (
-        <div>
-          <ConverterContainer valute = {valutes}/>
-          <CurrencyTable 
-            valute = {valutes} 
-            getListCurrencies = {this.props.getListCurrencies}
-            isFetching = {isFetching}
-            error = {error}
-          />
-        </div>
-      );
-    }
-  }
+const mapStateToProps = store => ({
+  listCurrencies: store.listCurrencies,
+});
 
-  const mapStateToProps = store => {
-    return {
-      listCurrencies: store.listCurrencies,
-    };
-  };
-  
-  const mapDispatchToProps = dispatch => ({
-    getListCurrencies: () => dispatch(getListCurrencies())
-  });
+const mapDispatchToProps = dispatch => ({
+  getListCurrenciesAction: () => dispatch(getListCurrencies()),
+});
 
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(CurrensiesListContainer);
+CurrensiesListContainer.propTypes = {
+  getListCurrenciesAction: PropTypes.func.isRequired,
+  listCurrencies: PropTypes.object.isRequired,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CurrensiesListContainer);

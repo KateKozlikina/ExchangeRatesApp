@@ -9,6 +9,7 @@ import CurrencyFormatter from 'currencyformatter.js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TableHead from '@material-ui/core/TableHead';
 import Flag from 'react-world-flags';
+import PropTypes from 'prop-types';
 
 
 const CustomTableCell = withStyles(theme => ({
@@ -38,7 +39,7 @@ const styles = theme => ({
   },
 
   row: {
-  '&:nth-of-type(odd)': {
+    '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.background.default,
     },
   },
@@ -50,14 +51,41 @@ const styles = theme => ({
   },
 });
 
-class CurrencyTable extends React.Component{
-
-  componentDidMount(){
-    this.props.getListCurrencies();
+class CurrencyTable extends React.Component {
+  componentDidMount() {
+    const { getListCurrencies } = this.props;
+    getListCurrencies();
   }
 
-  renderTemlate(){
-    const { classes, valute,isFetching, error} = this.props;
+
+  getCurrencyChange(value, prev) {
+    const { classes } = this.props;
+    let difference = value - prev;
+    const m = 10 ** 4;
+    difference = Math.round(difference * m) / m;
+    if (difference >= 0) {
+      return (
+        <p className={classes.currencyGrowth}>
+          +
+          {difference}
+          {' '}
+          ▲
+        </p>
+      );
+    }
+    return (
+      <p className={classes.currencyFall}>
+        {difference}
+        {' '}
+        ▼
+      </p>
+    );
+  }
+
+  renderTemlate() {
+    const {
+      classes, valute, isFetching, error,
+    } = this.props;
     if (error) {
       return (
         <p>Во время запроса произошла ошибка, пожалуйста, обновите страницу</p>
@@ -66,63 +94,57 @@ class CurrencyTable extends React.Component{
 
     if (isFetching) {
       return <CircularProgress disableShrink />;
-    }else {
-      const rows = Array.from(valute);  
-      return (
-          <Table className={classes.table}>
-            <TableHead >
-              <TableRow >
-                  <CustomTableCell>Флаг</CustomTableCell>
-                  <CustomTableCell>Код</CustomTableCell>
-                  <CustomTableCell>Номинал</CustomTableCell>
-                  <CustomTableCell>Валюта</CustomTableCell>
-                  <CustomTableCell>Курс ЦБ</CustomTableCell>
-                  <CustomTableCell>Изменения</CustomTableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-              { rows.map(row => (
-                <TableRow className={classes.row} key={row.id}>
-                  <CustomTableCell >
-                    <Flag code={row.code[0]+row.code[1]} height="20" width="25" fallback={ <span></span> }/>
-                  </CustomTableCell>
-                  <CustomTableCell >{row.code}</CustomTableCell>
-                  <CustomTableCell >
-                    {CurrencyFormatter.format(row.nominal, { currency: row.code, locale: 'ru_RU' })}
-                  </CustomTableCell>
-                  <CustomTableCell >{row.name}</CustomTableCell>
-                  <CustomTableCell >{row.value}</CustomTableCell>
-                  <CustomTableCell >{this.getCurrencyChange(row.value, row.prev)}</CustomTableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table> 
+    }
+    const rows = Array.from(valute);
+    return (
+      <Table className={classes.table}>
+        <TableHead>
+          <TableRow>
+            <CustomTableCell>Флаг</CustomTableCell>
+            <CustomTableCell>Код</CustomTableCell>
+            <CustomTableCell>Номинал</CustomTableCell>
+            <CustomTableCell>Валюта</CustomTableCell>
+            <CustomTableCell>Курс ЦБ</CustomTableCell>
+            <CustomTableCell>Изменения</CustomTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          { rows.map(row => (
+            <TableRow className={classes.row} key={row.id}>
+              <CustomTableCell>
+                <Flag code={row.code[0] + row.code[1]} height="20" width="25" fallback={<span />} />
+              </CustomTableCell>
+              <CustomTableCell>{row.code}</CustomTableCell>
+              <CustomTableCell>
+                {CurrencyFormatter.format(row.nominal, { currency: row.code, locale: 'ru_RU' })}
+              </CustomTableCell>
+              <CustomTableCell>{row.name}</CustomTableCell>
+              <CustomTableCell>{row.value}</CustomTableCell>
+              <CustomTableCell>{this.getCurrencyChange(row.value, row.prev)}</CustomTableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     );
   }
-} 
 
-getCurrencyChange(value, prev){
-  const {classes} = this.props;
-  let   difference = value - prev;
-  let m = Math.pow(10,4);
-  difference =  Math.round(difference*m)/m;
-  
-  if (difference >= 0)
-  return <p className={classes.currencyGrowth}>+{difference} ▲</p>
-  else
-  return <p className={classes.currencyFall}>{difference} ▼</p>
-}
-
-render() {
-    const { classes, } = this.props;
+  render() {
+    const { classes } = this.props;
     return (
       <div>
-          <Paper className={classes.root}>{this.renderTemlate()}</Paper>
-          <div className={classes.footer}></div>
+        <Paper className={classes.root}>{this.renderTemlate()}</Paper>
+        <div className={classes.footer} />
       </div>
-            );
-    
+    );
   }
 }
+
+CurrencyTable.propTypes = {
+  classes: PropTypes.object.isRequired,
+  valute: PropTypes.array.isRequired,
+  getListCurrencies: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+};
 
 export default withStyles(styles)(CurrencyTable);
