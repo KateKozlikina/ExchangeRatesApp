@@ -20,14 +20,13 @@ const styles = {
 
 function SimpleAppBar(props) {
   const { classes } = props;
-
+  const date = new Date().toLocaleDateString();
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.typography} variant="h6" color="inherit">
-            Курс валют ЦБР на сегодня
-            {new Date().toLocaleDateString()}
+            Курс валют ЦБР на сегодня {date}
           </Typography>
         </Toolbar>
       </AppBar>

@@ -29,7 +29,7 @@ class Converter extends React.Component {
       const USD = select.filter(a => a.code === 'USD')[0];
       if (EUR) editCurrencyFrom(0, EUR);
       if (USD) editCurrencyFrom(1, USD);
-    }
+    } 
   }
 
   render() {
